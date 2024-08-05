@@ -1,15 +1,13 @@
-import { CityObj, CountryObj } from '../model'
+import { useCities } from '../contexts/CitiesContext'
+import { CountryObj } from '../model'
 import CountryItem from './CountryItem'
 import styles from './CountryList.module.css'
 import Message from './Message'
 import Spinner from './Spinner'
 
-interface Props {
-  cities: CityObj[]
-  isLoading: boolean
-}
+function CountriesList() {
+  const { cities, isLoading } = useCities()
 
-function CountriesList({ cities, isLoading }: Props) {
   if (isLoading) return <Spinner />
 
   if (!cities.length) return <Message message='Add your first city by clicking on a city in the map!' />
