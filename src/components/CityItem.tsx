@@ -22,8 +22,13 @@ interface Props {
 }
 
 function CityItem({ city }: Props) {
-  const { currentCity } = useCities()
+  const { currentCity, deleteCity } = useCities()
   const { cityName, emoji, date, id, position } = city
+
+  function handleDeleteCity(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    deleteCity(Number(id))
+  }
 
   return (
     <li>
@@ -34,7 +39,9 @@ function CityItem({ city }: Props) {
         <span className={styles.emoji}>{flagemojiToPNG(emoji)}</span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>{formatDate(date)}</time>
-        <button className={styles.deleteBtn}>&times;</button>
+        <button className={styles.deleteBtn} onClick={handleDeleteCity}>
+          &times;
+        </button>
       </Link>
     </li>
   )
