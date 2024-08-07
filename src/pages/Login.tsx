@@ -1,17 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import styles from './Login.module.css'
 import PageNav from '../components/PageNav'
+import Button from '../components/Button'
+import { useAuth } from '../contexts/FakeAuthContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
   const [email, setEmail] = useState<string>('jack@example.com')
   const [password, setPassword] = useState<string>('qwerty')
 
+  const { login, isAuthentication } = useAuth()
+  const navigate = useNavigate()
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    if (email && password) login(email, password)
+  }
+
+  useEffect(() => {
+    if (isAuthentication) navigate('/app', { replace: true })
+  }, [isAuthentication, navigate])
+
   return (
     <main className={styles.login}>
       <PageNav />
 
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label htmlFor='email'>Email address</label>
           <input type='email' id='email' onChange={(e) => setEmail(e.target.value)} value={email} />
@@ -23,7 +39,7 @@ export default function Login() {
         </div>
 
         <div>
-          <button>Login</button>
+          <Button type='primary'>Login</Button>
         </div>
       </form>
     </main>
